@@ -5,3 +5,6 @@ logger-level: debug
 is_testing: false
 
 server-port: 8080
+
+wikibench: 'http://51.250.27.205:8080'
+
