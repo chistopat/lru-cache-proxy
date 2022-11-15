@@ -3,10 +3,10 @@
 #include <userver/clients/http/component.hpp>
 #include <userver/components/component.hpp>
 #include <userver/components/component_list.hpp>
+#include <userver/engine/mutex.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
 #include <userver/server/http/http_status.hpp>
 #include <userver/utils/assert.hpp>
-#include <userver/engine/mutex.hpp>
 
 namespace cache_proxy {
 
@@ -15,7 +15,7 @@ class Proxy final : public userver::server::handlers::HttpHandlerBase {
   static constexpr std::string_view kName = "handler-proxy";
 
   Proxy(const userver::components::ComponentConfig& config,
-           const userver::components::ComponentContext& context);
+        const userver::components::ComponentContext& context);
 
   std::string HandleRequestThrow(
       const userver::server::http::HttpRequest& request,
@@ -24,8 +24,6 @@ class Proxy final : public userver::server::handlers::HttpHandlerBase {
  private:
   std::shared_ptr<userver::clients::http::Response> ForwardRequest(
       const userver::server::http::HttpRequest& request) const;
-
-  std::string BuildUrl(const userver::server::http::HttpRequest& request) const;
 
  private:
   userver::clients::http::Client& http_client_;

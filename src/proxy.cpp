@@ -1,9 +1,11 @@
 #include "proxy.hpp"
 
+#include <userver/http/url.hpp>
+
 namespace cache_proxy {
 
 Proxy::Proxy(const userver::components::ComponentConfig& config,
-                   const userver::components::ComponentContext& context)
+             const userver::components::ComponentContext& context)
     : HttpHandlerBase(config, context),
       http_client_(context.FindComponent<userver::components::HttpClient>()
                        .GetHttpClient()),
@@ -18,22 +20,17 @@ std::string Proxy::HandleRequestThrow(
   return resp->body();
 }
 
-
 std::shared_ptr<userver::clients::http::Response> Proxy::ForwardRequest(
     const userver::server::http::HttpRequest& request) const {
+  auto url =
+      userver::http::MakeUrl(upstream_, {{"url", request.GetArg("url")}});
   auto response = http_client_.CreateRequest()
-                      ->get(BuildUrl(request))
-                      ->retry(1)
-                      ->timeout(std::chrono::seconds{1})
+                      ->get(url)
+                      ->retry(2)
+                      ->timeout(std::chrono::seconds{3})
                       ->perform();
   return response;
 }
-
-std::string
-Proxy::BuildUrl(const userver::server::http::HttpRequest& request) const {
-  return fmt::format("{0}/wiki/{1}", upstream_, request.GetArg("id"));
-}
-
 
 void AppendProxy(userver::components::ComponentList& component_list) {
   component_list.Append<Proxy>();
