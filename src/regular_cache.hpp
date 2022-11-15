@@ -27,7 +27,6 @@ class RegularLruCacheComponent final
   WikiBenchClient& wiki_bench_client_;
 };
 
-void AppendRegularLruCache(
-    userver::components::ComponentList& component_list);
+void AppendRegularLruCache(userver::components::ComponentList& component_list);
 
 }  // namespace cache_proxy

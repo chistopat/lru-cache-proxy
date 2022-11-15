@@ -9,7 +9,6 @@ RegularLruCacheComponent::RegularLruCacheComponent(
       wiki_bench_client_(
           context.FindComponent<WikiBenchClient>("wiki-bench-client")) {}
 
-
 Value RegularLruCacheComponent::GetValueForExpiredKeyFromRemote(
     const Key& key) {
   auto data = GetCache().GetOptional(key);
@@ -21,14 +20,11 @@ Value RegularLruCacheComponent::GetValueForExpiredKeyFromRemote(
   return data.value();
 }
 
-
 Value RegularLruCacheComponent::DoGetByKey(const Key& key) {
   return GetValueForExpiredKeyFromRemote(key);
 }
 
-
-void AppendRegularLruCache(
-    userver::components::ComponentList& component_list) {
+void AppendRegularLruCache(userver::components::ComponentList& component_list) {
   component_list.Append<RegularLruCacheComponent>();
 }
 
