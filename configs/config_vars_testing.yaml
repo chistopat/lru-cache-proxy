@@ -6,4 +6,5 @@ is_testing: true
 
 server-port: 8080
 
-wikibench: 'http://51.250.27.205:8080/lookup'
+wikibench: 'http://51.250.27.205:8080/wiki'
+
