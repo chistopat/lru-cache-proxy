@@ -1,12 +1,10 @@
 #pragma once
 
-#include <userver/clients/http/component.hpp>
 #include <userver/components/component.hpp>
 #include <userver/components/component_list.hpp>
-#include <userver/engine/mutex.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
-#include <userver/server/http/http_status.hpp>
-#include <userver/utils/assert.hpp>
+
+#include "regular_cache.hpp"
 
 namespace cache_proxy {
 
@@ -22,12 +20,7 @@ class Proxy final : public userver::server::handlers::HttpHandlerBase {
       userver::server::request::RequestContext&) const;
 
  private:
-  std::shared_ptr<userver::clients::http::Response> ForwardRequest(
-      const userver::server::http::HttpRequest& request) const;
-
- private:
-  userver::clients::http::Client& http_client_;
-  const std::string upstream_;
+  RegularLruCacheComponent& regular_lru_;
 };
 
 void AppendProxy(userver::components::ComponentList& component_list);
